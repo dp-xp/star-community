@@ -11,7 +11,9 @@ import priv.alisa.community.mapper.UserMapper;
 import priv.alisa.community.model.User;
 import priv.alisa.community.provider.GithubProvider;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -34,7 +36,7 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request) {
+                           HttpServletResponse response) {
         Accesstoken accesstoken = new Accesstoken();
         accesstoken.setClient_id(clientId);
         accesstoken.setClient_secret(clientSecret);
@@ -44,15 +46,17 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccesstoken(accesstoken);
         GithubUser githubUser = githubProvider.getUser(accessToken);
         if (githubUser!=null){
-            //登录成功，写cookie和session
+            //登录成功
             User user = new User();
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
-            request.getSession().setAttribute("user",githubUser);
+            //写入cookie
+            response.addCookie(new Cookie("token",token));
             return "redirect:/";
         }else {
             //登录失败重新登录
