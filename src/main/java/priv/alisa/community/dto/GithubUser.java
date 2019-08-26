@@ -1,4 +1,4 @@
-package priv.alisa.community.entity;
+package priv.alisa.community.dto;
 
 public class GithubUser {
     private String name;
