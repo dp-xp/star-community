@@ -1,0 +1,13 @@
+body{
+    background: url("images/background.jpg");
+
+    background-repeat: repeat;
+    /*background-color: #bce8f1;*/
+}
+#navbar{
+    background-color: #9acfea;
+}
+#content{
+    background-color: white;
+    margin: 20px 40px;
+}

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>星星社区</title>
+    <title>发布</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -26,7 +26,7 @@
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown" th:if="${session.user !=null}">
+                <li class="dropdown" th:if="${session.user!=null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false" th:text="${session.user.getName()}"> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -41,8 +41,38 @@
         </div>
     </div>
 </nav>
-</body>
 
+<div class="container-fluid" id="content">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
+                <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
+                <hr>
+                <form action="">
+                    <div class="form-group">
+                        <label for="title">问题标题（简单扼要）:</label>
+                        <input type="text" class="form-control" id="title" placeholder="问题标题...">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">问题说明（简单扼要）:</label>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tag">问题标题（简单扼要）:</label>
+                        <input type="text" class="form-control" id="tag" placeholder="输入标签，以,分隔">
+                    </div>
+                    <button type="button" class="btn btn-success" id="submit">发布</button>
+                </form>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <h3>问题发起指南</h3>
+                • 问题标题: 请用精简的语言描述您发布的问题，不超过25字<br>
+                • 问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料<br>
+                • 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字<br>
+            </div>
+        </div>
+    </div>
+
+</body>
 <style>
     body{
         background: url("images/background.jpg");
@@ -51,6 +81,14 @@
     }
     #navbar{
         background-color: #9acfea;
+    }
+    #content{
+        background-color: white;
+        margin: 20px 40px;
+    }
+    #submit{
+        margin-bottom: 20px;
+        float: right;
     }
 </style>
 </html>
