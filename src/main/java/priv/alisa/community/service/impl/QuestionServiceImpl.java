@@ -46,4 +46,30 @@ public class QuestionServiceImpl implements QuestionService {
         pageDTO.setQuestions(questionDTOList);
         return pageDTO;
     }
+
+    @Override
+    public PageDTO queryAllQuestion(Integer userId, Integer page, Integer size) {
+        //根据页码和页面大小计算偏移量
+        Integer totalCount = questionMapper.countByUserId(userId);
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setPagination(totalCount,page,size);
+        if (page < 1){
+            page = 1;
+        }
+        if (page > pageDTO.getTotalPage()){
+            page = pageDTO.getTotalPage();
+        }
+        Integer offset = page>0?size * (page -1):0;
+        List<Question> questions = questionMapper.queryAllQuestionByUserId(userId,offset,size);
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        for (Question question : questions) {
+            User user = userMapper.findById(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
+        }
+        pageDTO.setQuestions(questionDTOList);
+        return pageDTO;
+    }
 }
