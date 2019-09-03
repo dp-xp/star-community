@@ -1,20 +1,17 @@
 package priv.alisa.community.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import priv.alisa.community.dto.QuestionDTO;
-import priv.alisa.community.mapper.QuestionMapper;
+import org.springframework.web.bind.annotation.RequestParam;
+import priv.alisa.community.dto.PageDTO;
 import priv.alisa.community.mapper.UserMapper;
-import priv.alisa.community.model.Question;
 import priv.alisa.community.model.User;
 import priv.alisa.community.service.QuestionService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class IndexController {
@@ -25,7 +22,10 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request, Model model){
+    public String index(HttpServletRequest request,
+                        Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "5") Integer size){
         Cookie[] cookies =request.getCookies();
         if (cookies!=null){
             for (Cookie cookie:cookies){
@@ -39,8 +39,8 @@ public class IndexController {
                 }
             }
         }
-        List<QuestionDTO> questionList = questionService.queryAllQuestion();
-        model.addAttribute("questionList",questionList);
+        PageDTO pagination = questionService.queryAllQuestion(page,size);
+        model.addAttribute("pagination",pagination);
         return "index";
     }
 }

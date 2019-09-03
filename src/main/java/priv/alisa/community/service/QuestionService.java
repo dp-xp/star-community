@@ -1,11 +1,9 @@
 package priv.alisa.community.service;
 
 import org.springframework.stereotype.Service;
-import priv.alisa.community.dto.QuestionDTO;
-
-import java.util.List;
+import priv.alisa.community.dto.PageDTO;
 
 @Service
 public interface QuestionService {
-    List<QuestionDTO> queryAllQuestion();
+    PageDTO queryAllQuestion(Integer pageNum, Integer size);
 }
