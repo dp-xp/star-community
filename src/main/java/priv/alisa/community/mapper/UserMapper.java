@@ -1,8 +1,6 @@
 package priv.alisa.community.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import priv.alisa.community.model.User;
 
@@ -14,6 +12,13 @@ public interface UserMapper {
 
     @Select("select * from user where token = #{token}")
     User findByToken(String token);
+
     @Select("select * from user where id = #{id}")
-    User findById(Integer id);
+    User findById(@Param("id") Integer id);
+
+    @Select("select * from user where account_id = #{accountId}")
+    User findByAccountId(@Param("accountId") String accountId);
+
+    @Update("update user set name = #{name},gmt_modified = #{gmtModified},token = #{token},avatar_url = #{avatarUrl} where id = #{id}")
+    void update(User user);
 }

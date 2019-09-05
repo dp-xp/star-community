@@ -15,6 +15,10 @@ body{
     width: 40px;
     height: 40px;
 }
+.img-circle{
+    width: 40px;
+    height: 40px;
+}
 .text-desc {
     font-size: 12px;
     font-weight: normal;
@@ -33,4 +37,17 @@ body{
 }
 .list-group {
     margin-top: 20px;
+}
+.community-menu{
+    color: #999;
+    font-size: 13px;
+}
+.jumbotron{
+    margin: 50px;
+    background-color: rgba(220,38,38,0.0);
+}
+.back_home_btn {
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#b6dbe3),to(#a7d0d6));
+    background-repeat: repeat-x;
+    border-color: #a7d0d6;
 }

@@ -1,9 +1,6 @@
 package priv.alisa.community.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Controller;
 import priv.alisa.community.dto.QuestionDTO;
 import priv.alisa.community.model.Question;
@@ -27,4 +24,10 @@ public interface QuestionMapper {
 
     @Select("select count(1) from question where creator = #{userId}")
     Integer countByUserId(@Param(value = "userId") Integer userId);
+
+    @Select("select * from question where id=#{id}")
+    Question queryById(@Param(value = "id") Integer id);
+
+    @Update("update question set title=#{title},description=#{description},gmt_modified=#{gmtModified},tag=#{tag},view_count=#{viewCount}+1 where id=#{id}")
+    int update(Question question);
 }

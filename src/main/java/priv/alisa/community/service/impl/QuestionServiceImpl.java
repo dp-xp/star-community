@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import priv.alisa.community.dto.PageDTO;
 import priv.alisa.community.dto.QuestionDTO;
+import priv.alisa.community.exception.CustomizeErrorCode;
+import priv.alisa.community.exception.CustomizeException;
 import priv.alisa.community.mapper.QuestionMapper;
 import priv.alisa.community.mapper.UserMapper;
 import priv.alisa.community.model.Question;
@@ -71,5 +73,40 @@ public class QuestionServiceImpl implements QuestionService {
         }
         pageDTO.setQuestions(questionDTOList);
         return pageDTO;
+    }
+
+    @Override
+    public QuestionDTO queryById(Integer id) {
+        Question question = questionMapper.queryById(id);
+        if (question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question,questionDTO);
+        User user = userMapper.findById(question.getCreator());
+        questionDTO.setUser(user);
+        return questionDTO;
+    }
+
+    @Override
+    public void createOrUpdate(Question question) {
+        if (question.getId() == null){
+            //创建
+            question.setGmtCreate(System.currentTimeMillis());
+            questionMapper.create(question);
+        }else {
+            //更新
+            question.setGmtModified(System.currentTimeMillis());
+            int update = questionMapper.update(question);
+            if (update != 1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public void addView(Integer id) {
+        Question question = questionMapper.queryById(id);
+        questionMapper.update(question);
     }
 }
